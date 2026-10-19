@@ -2005,3 +2005,56 @@ gradeables:
     eg_grade_inquiry_due_date: 9999-01-06 23:59:59
     eg_has_due_date: true
     eg_has_release_date: true
+
+  # Each component is assigned a page of upload.pdf, so opening it jumps the PDF to that page
+  - g_id: grading_scanned_exam
+    g_title: Grading Scanned Exam
+    gradeable_config: pdf_exam
+    sample_path: /usr/local/submitty/more_autograding_examples/pdf_exam/page_assignment
+    components:
+      - gc_lower_clamp: 0
+        gc_default: 5
+        gc_max_value: 5
+        gc_upper_clamp: 5
+        gc_title: Question 1
+        gc_page: 1
+        marks:
+          - gcm_note: Full Credit
+            gcm_points: 0
+          - gcm_note: Wrong answer
+            gcm_points: -5
+      - gc_lower_clamp: 0
+        gc_default: 5
+        gc_max_value: 5
+        gc_upper_clamp: 5
+        gc_title: Question 2
+        gc_page: 2
+        marks:
+          - gcm_note: Full Credit
+            gcm_points: 0
+          - gcm_note: Wrong answer
+            gcm_points: -5
+      - gc_lower_clamp: 0
+        gc_default: 5
+        gc_max_value: 5
+        gc_upper_clamp: 5
+        gc_title: Question 3
+        gc_page: 3
+        marks:
+          - gcm_note: Full Credit
+            gcm_points: 0
+          - gcm_note: Wrong answer
+            gcm_points: -5
+    g_ta_view_start_date: 1970-01-01 23:59:59
+    eg_submission_open_date: 1971-01-01 23:59:59
+    eg_submission_due_date: 1972-01-01 23:59:59
+    g_grade_start_date: 1973-01-01 23:59:59
+    g_grade_due_date: 9998-12-31 23:59:59
+    g_grade_released_date: 9998-12-31 23:59:59
+    eg_grade_inquiry_start_date: 9999-01-01 23:59:59
+    eg_grade_inquiry_due_date: 9999-01-06 23:59:59
+    eg_has_due_date: true
+    eg_has_release_date: true
+    eg_bulk_test: true
+    eg_student_submit: false
+    eg_student_download: false
