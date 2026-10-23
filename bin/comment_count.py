@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/submitty/venv/bin/python3
 import sys
 import subprocess
 import os.path

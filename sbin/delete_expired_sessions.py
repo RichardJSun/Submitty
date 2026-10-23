@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 
 """
 Deletes all expired sessions from the sessions table in the main Submitty database

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 """
 Setup script that reads in the users.yml and courses.yml files in the ../data directory and then
 creates sample emails entry in the database.

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 #
 # This script is run by a cron job as the DAEMON_USER
 #

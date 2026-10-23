@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 """
 Setup script that reads in the users.yml and courses.yml files in the ../data directory and then
 creates the users and courses for the system. This is primarily used by Vagrant and Travis to

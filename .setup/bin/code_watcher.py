@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 """
 Script that when run will monitor a given directory and anytime there's a change in it, run the
 appropriate INSTALL_SUBMITTY_HELPER_*.sh script. This should be run from within Vagrant.

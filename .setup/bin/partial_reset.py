@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 """
 This does a more partial reset of the system compared to reset_system.py, primarily not wiping
 various changes like removing DB users, all created users (including system ones like PHP_USER,

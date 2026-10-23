@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 
 """Given openCV image array, search for handwritten digits and attempt to read them."""
 

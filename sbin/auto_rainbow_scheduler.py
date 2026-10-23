@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 
 """
 Script to be called by cron job, easily schedules auto rainbow grade jobs.

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 """
 Setup script that scans over the user_photo zips inside the submitty repo sample files
 and then generates sample data in the user_data directory.  We are only grabbing one

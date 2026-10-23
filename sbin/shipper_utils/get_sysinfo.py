@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/local/submitty/venv/bin/python3
 
 import argparse
 import docker

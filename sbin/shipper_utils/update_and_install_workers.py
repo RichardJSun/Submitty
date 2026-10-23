@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 -u
+#!/usr/local/submitty/venv/bin/python3 -u
 
 import sys
 import os
@@ -192,7 +192,7 @@ def update_docker_images(user, host, worker, autograding_workers, autograding_co
         # Add the commands to pull the images
         for image in images_to_update:
             commands.append(f'python3 {script_directory} --pull {image}')
-        commands.append(f"python3 {os.path.join(shipperutil_path, 'get_sysinfo.py')} docker osinfo")
+        commands.append(f"{os.path.join(shipperutil_path, 'get_sysinfo.py')} docker osinfo")
         success = run_commands_on_worker(user, host, machine, commands, operation='docker image update', thread_object=thread_object)
 
     return success

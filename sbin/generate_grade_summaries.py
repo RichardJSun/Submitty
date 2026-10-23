@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 """
 Script to trigger the generation of grade summaries. Additionally, if <source> is "submitty_daemon", it will
 save the latest GUI customization file, crucial for courses not using manual customizations, before submitting

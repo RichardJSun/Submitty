@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 """
 Takes in a submission directory full of textbox answers that should
 have left vs right handedness for students, and then writes a file for

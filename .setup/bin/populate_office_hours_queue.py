@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 
 import argparse
 from sqlalchemy import create_engine, Table, MetaData, select, update, insert, text

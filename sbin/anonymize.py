@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 """
 This script can be used to assign gradeable-specific anonymous ids
 to the members of a course that don't already have anon ids.

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 
 from .base_testcase import BaseTestCase
 from submitty_jobs import bulk_upload_split, bulk_qr_split

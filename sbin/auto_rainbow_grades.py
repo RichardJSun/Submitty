@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 
 """
 Automatically generate rainbow grades. The source should be either "submitty_gui"

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 """
 This script will generate the repositories for a specified course and semester
 for each student that currently does not have a repository. You can either make
@@ -6,8 +6,7 @@ the repositories at a per course level (for a repo that would carry through
 all gradeables for example) or on a per gradeable level.
 
 usage:
-sudo /usr/local/submitty/venv/bin/python3 /usr/local/submitty/bin/generate_repos.py <semester> <course_code> \
-<project_name/gradeable_id>
+sudo /usr/local/submitty/bin/generate_repos.py <semester> <course_code> <project_name/gradeable_id>
 
 """
 

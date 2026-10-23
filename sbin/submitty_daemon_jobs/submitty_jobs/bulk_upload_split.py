@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/submitty/venv/bin/python3
 
 """Splits a PDF every num pages and moves images and pdfs to split folder."""
 
