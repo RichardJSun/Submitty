@@ -2,9 +2,9 @@
 
 import json
 import os
-
-import requests
-from requests.exceptions import RequestException
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "config")
 
@@ -55,15 +55,21 @@ def check_password(environ, user, password):
     }
 
     try:
-        req = requests.post(
-            SUBMISSION_URL + f"/{semester}/{course}/authentication/vcs_login", data=data
+        req = Request(
+            SUBMISSION_URL + f"/{semester}/{course}/authentication/vcs_login",
+            data=urlencode(data).encode(),
         )
-        response = req.json()
+        try:
+            resp = urlopen(req)
+        except HTTPError as err:
+            resp = err  # a non-2xx reply still carries a JSON status to honor
+        with resp:
+            response = json.load(resp)
         if response["status"] == "error":
             return None
         else:
             return response["status"] == "success"
-    except RequestException:
+    except (URLError, ValueError):
         pass
     return False
 
@@ -73,7 +79,7 @@ if __name__ == "__main__":
     To test this script, you'll have to run this as www-data or PHP_USER or CGI_USER so
     that when it creates the temp files, pam_check.cgi has access to them. Run it like
     this:
-    sudo -u www-data /usr/local/submitty/venv/bin/python3 /usr/local/submitty/sbin/authentication.py
+    sudo -u www-data python3 /usr/local/submitty/sbin/authentication.py
 
     The output should be:
     True
