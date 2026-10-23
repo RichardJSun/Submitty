@@ -112,6 +112,12 @@ apt-get install -qqy imagemagick
 # miscellaneous usability
 apt-get install -qqy emacs
 
+# clang++ links against the newest GCC under /usr/lib/gcc. emacs pulls in libgcc-14-dev
+# through libgccjit0 without libstdc++-14-dev, so give every GCC there a C++ standard library.
+for gcc_dir in /usr/lib/gcc/"$(gcc -print-multiarch)"/[0-9]*/; do
+    apt-get install -qqy "libstdc++-$(basename "$gcc_dir")-dev"
+done
+
 install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 chmod a+r /etc/apt/keyrings/docker.asc
