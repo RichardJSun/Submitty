@@ -21,7 +21,7 @@ env:
   POSTGRES_HOST: localhost
   PHP_VER: 8.2
   NODE_VERSION: 20
-  PYTHON_VERSION: "3.10"
+  PYTHON_VERSION: "3.12"
 
 concurrency:
   # If this is a PR, cancel all previously running jobs on source branch
@@ -52,7 +52,7 @@ jobs:
 
   ansible-lint:
     name: Ansible Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - name: Run ansible-lint
@@ -63,7 +63,7 @@ jobs:
 
   css-lint:
     name: CSS Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: site
@@ -88,7 +88,7 @@ jobs:
 
   js-lint:
     name: JavaScript Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: site
@@ -113,7 +113,7 @@ jobs:
 
   js-unit:
     name: JavaScript Unit
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: site
@@ -141,7 +141,7 @@ jobs:
 
   cypress-component:
     name: Cypress Component
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: site
@@ -182,7 +182,7 @@ jobs:
 
   twig-lint:
     name: Twig Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: site
@@ -209,7 +209,7 @@ jobs:
 
   php-lint:
     name: PHP Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: site
@@ -245,7 +245,7 @@ jobs:
 
   php-unit:
     name: PHP Unit
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: site
@@ -281,7 +281,7 @@ jobs:
 
   python-lint:
     name: Python Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -303,7 +303,7 @@ jobs:
 
   python-unit:
     name: Python Unit
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -389,7 +389,7 @@ jobs:
 
   yaml-lint:
     name: YAML Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - name: install yamllint
@@ -400,7 +400,7 @@ jobs:
 
   shellcheck:
     name: Shell Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - name: install ShellCheck
@@ -411,7 +411,7 @@ jobs:
 
   colors-css:
     name: colors.css Check
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout main branch
@@ -455,7 +455,7 @@ jobs:
 
   db-check:
     name: DB Check
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       PGPASSWORD: submitty_dbuser
       MAIN_INSTALL_PATH: ${{ github.WORKSPACE }}/main
@@ -514,6 +514,10 @@ jobs:
           ref: ${{ env.MBASE || 'main' }}
           path: main/GIT_CHECKOUT/Submitty
 
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
       - name: Download Required Packages
         run: |
           pip install -r <(
@@ -526,7 +530,7 @@ jobs:
 
       - name: Create Users and Groups
         run: | # Create users and groups
-          sudo -E python3 ${MAIN_REPO_PATH}/Submitty/.setup/bin/create_untrusted_users.py
+          sudo -E env "PATH=$PATH" python3 ${MAIN_REPO_PATH}/Submitty/.setup/bin/create_untrusted_users.py
 
           sudo addgroup submitty_daemonphp
           sudo addgroup submitty_daemoncgi
@@ -563,7 +567,7 @@ jobs:
             mkdir -vp "$1/site"     &&  chmod -vR 777 "$1/site"
             mkdir -vp "$2/courses"  &&  chmod -vR 777 "$2/courses"
 
-            sudo -E python3 "$3/Submitty/.setup/generate_configs.py" \
+            sudo -E env "PATH=$PATH" python3 "$3/Submitty/.setup/generate_configs.py" \
                         --install-dir "$1"
             tmp=$(mktemp) && jq --arg v "localhost" '.database_host = $v' "$1/config/database.json" > "$tmp" && mv "$tmp" "$1/config/database.json"
             tmp=$(mktemp) && jq --argjson v $4 '.database_port = $v' "$1/config/database.json" > "$tmp" && mv "$tmp" "$1/config/database.json"
@@ -573,9 +577,9 @@ jobs:
             tmp=$(mktemp) && jq --arg v "$2" '.submitty_data_dir = $v' "$1/config/submitty.json" > "$tmp" && mv "$tmp" "$1/config/submitty.json"
             tmp=$(mktemp) && jq --arg v "$3/Submitty" '.submitty_repository = $v' "$1/config/submitty.json" > "$tmp" && mv "$tmp" "$1/config/submitty.json"
 
-            sudo -E python3 "$3/Submitty/.setup/set_config_permissions.py" \
+            sudo -E env "PATH=$PATH" python3 "$3/Submitty/.setup/set_config_permissions.py" \
                         --install-dir "$1"
-            sudo -E python3 "$3/Submitty/.setup/validate_configs.py" \
+            sudo -E env "PATH=$PATH" python3 "$3/Submitty/.setup/validate_configs.py" \
                         --install-dir "$1" --data-dir "$2"
 
             # Copy necessary files to the installation path
@@ -633,7 +637,7 @@ jobs:
           python3 ${MAIN_REPO_PATH}/Submitty/migration/run_migrator.py -e master migrate --initial
 
           sudo ln -vs /usr/bin/true /usr/bin/ldapadd
-          sudo -E python3 ${MAIN_REPO_PATH}/Submitty/.setup/bin/setup_sample_courses.py     \
+          sudo -E env "PATH=$PATH" python3 ${MAIN_REPO_PATH}/Submitty/.setup/bin/setup_sample_courses.py     \
             blank --no_grading --data_dir ${MAIN_DATA_PATH} --install_dir ${MAIN_INSTALL_PATH}
 
           sudo chmod -vR 777 ${MAIN_DATA_PATH}/courses
@@ -650,7 +654,7 @@ jobs:
 
           python3 ${PR_REPO_PATH}/Submitty/migration/run_migrator.py -e master migrate --initial
 
-          sudo -E python3 ${PR_REPO_PATH}/Submitty/.setup/bin/setup_sample_courses.py       \
+          sudo -E env "PATH=$PATH" python3 ${PR_REPO_PATH}/Submitty/.setup/bin/setup_sample_courses.py       \
             blank --no_grading --data_dir ${PR_DATA_PATH} --install_dir ${PR_INSTALL_PATH}
 
           sudo chmod -vR 777 ${PR_DATA_PATH}/courses
@@ -717,7 +721,7 @@ jobs:
 
   Cypress-System:
     name: Cypress (System)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres
@@ -920,7 +924,7 @@ jobs:
         run: sudo bash tests/test_site_error_log.sh
 
   Cypress:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -1021,7 +1025,7 @@ jobs:
 
   Integration:
     name: Integration
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     # Postgres should not be needed for the integration tests.
     # But unfortunately Configure test suite seems to use it at the moment, and
     # Configure test suite seems to be necessary for the Integration tests
@@ -1050,7 +1054,7 @@ jobs:
 
   ansible-ci:
     name: Ansible Install
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - name: Setup SSH

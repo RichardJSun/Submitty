@@ -22,7 +22,7 @@ env:
   POSTGRES_HOST: localhost
   PHP_VER: 8.2
   NODE_VERSION: 16
-  PYTHON_VERSION: "3.10"
+  PYTHON_VERSION: "3.12"
 
 runs:
   using: "composite"
@@ -51,10 +51,10 @@ runs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
-    - name: Disable php8.1-fpm before setup
+    - name: Disable the runner image php-fpm before setup
       run: |
-        sudo systemctl stop php8.1-fpm
-        sudo systemctl disable php8.1-fpm
+        sudo systemctl stop php8.3-fpm
+        sudo systemctl disable php8.3-fpm
       shell: bash
 
     - uses: shivammathur/setup-php@2.37.2
@@ -77,10 +77,8 @@ runs:
 
     - name: Install python dependencies
       run: |
-        # Install for local
+        # for the runner user; system-wide use goes through /usr/local/submitty/venv, which INSTALL_SUBMITTY.sh creates
         pip3 install -r ${SUBMITTY_REPOSITORY}/.setup/pip/system_requirements.txt
-        # Install globally
-        sudo pip3 install -r ${SUBMITTY_REPOSITORY}/.setup/pip/system_requirements.txt
       shell: bash
     - name: Get composer cache dir
       id: composer-cache
@@ -107,9 +105,6 @@ runs:
         cd ${SUBMITTY_REPOSITORY}/python_submitty_utils
         pip3 install .
         pip3 show submitty_utils
-        umask 022
-        sudo -H pip3 install .
-        sudo pip3 show submitty_utils
       shell: bash
 
     - name: Create Database and default users
@@ -217,6 +212,6 @@ runs:
       run: |
         cd $SUBMITTY_REPOSITORY
         SEMESTER=$(python3 -c 'from datetime import datetime; today = datetime.today(); semester = ("s" if today.month < 7 else "f") + str(today.year)[-2:]; print(semester)')
-        sudo python3 /usr/local/submitty/bin/generate_repos.py ${SEMESTER} sample open_homework
+        sudo /usr/local/submitty/bin/generate_repos.py ${SEMESTER} sample open_homework
         bash tests/git_test.sh
       shell: bash

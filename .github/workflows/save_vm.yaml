@@ -45,7 +45,7 @@ jobs:
           echo "version=${TAG:1}" >> $GITHUB_OUTPUT
 
       - name: Vagrant Up
-        run: CI=1 vagrant up
+        run: CI=1 FROM_SCRATCH=1 vagrant up
 
       - name: Validate image
         run: curl --show-error --fail --include http://localhost:1511
@@ -70,7 +70,7 @@ jobs:
         run: |
           export VAGRANT_CLOUD_TOKEN="${VAGRANT_CLOUD_TOKEN_SECRET};${HCP_TOKEN}"
           vagrant cloud auth login
-          vagrant cloud publish SubmittyBot/ubuntu22-dev "${IMAGE_VERSION}.$(date +"%y%m%d%H%M")" virtualbox submitty.box --release --force
+          vagrant cloud publish SubmittyBot/ubuntu24-dev "${IMAGE_VERSION}.$(date +"%y%m%d%H%M")" virtualbox submitty.box --release --force
           vagrant cloud auth logout
 
       - name: Acquire Job ID
