@@ -7,6 +7,7 @@ import os
 import json
 from pathlib import Path
 import shutil
+import sys
 import subprocess
 import stat
 import traceback
@@ -126,7 +127,7 @@ class RunAutoRainbowGrades(CourseJob):
         try:
             with open(debug_output, "w") as file:
                 subprocess.call(
-                    ["python3", path, semester, course, source], stdout=file, stderr=file
+                    [sys.executable, path, semester, course, source], stdout=file, stderr=file
                 )
         except PermissionError:
             print("error, could not open " + file + " for writing")
@@ -485,7 +486,7 @@ class UpdateDockerImages(AbstractJob):
         )
         with os.fdopen(log_fd, "a") as output_file:
             subprocess.run(
-                ["python3", script_path, "--docker_images"], stdout=output_file, stderr=output_file
+                [sys.executable, script_path, "--docker_images"], stdout=output_file, stderr=output_file
             )
 
         log_msg = "[Last ran on: {:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}]\n".format(
@@ -511,7 +512,7 @@ class UpdateSystemInfo(AbstractJob):
         script = os.path.join(INSTALL_DIR, "sbin", "shipper_utils", "get_sysinfo.py")
         with os.fdopen(log, "a") as output_file:
             subprocess.run(
-                ["python3", script, "--workers", "service", "disk", "sysload"],
+                [sys.executable, script, "--workers", "service", "disk", "sysload"],
                 stdout=output_file,
                 stderr=output_file,
             )
@@ -655,4 +656,4 @@ class GradingClustering(CourseGradeableJob):
         algorithm = self.job_details["algorithm"]
 
         script = str(Path(INSTALL_DIR, "sbin", "grading_clustering", "main.py"))
-        subprocess.run(["python3", script, semester, course, gradeable, algorithm], check=True)
+        subprocess.run([sys.executable, script, semester, course, gradeable, algorithm], check=True)
